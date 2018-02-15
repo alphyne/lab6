@@ -27,22 +27,26 @@ function addProjectDetails(e) {
 	// get rid of 'project' from the front of the id 'project3'
 	var idNumber = projectID.substr('project'.length);
 
-	var project = this;
-	$.get('http://localhost:3000/project/' + idNumber, function
-		callback(result){
+	console.log("User clicked on project " + idNumber);
 
-		console.log(result);
-		addProject(projectID, result);
-	})
-
-	console.log("User clicked on project " + idNumber, projectID, idNumber);
+	var link = "/project/" + idNumber;
+	console.log(link);
+	$.get(link, callBack);
 }
 
-function addProject(id, result) {
+function addProject(result) {
   var projectHTML = '<a href="#" class="thumbnail">' +
-    '<img src="' + result['image'] + '" class="img detailsImage">' +
+    '<img src="' + result['image'] + '" class="detailsImage">' +
     '<p>' + result['title'] + '</p>' +
-    '<p><small>' + result['date'] +
-    '</small></p></a>' + result['summary']; 
-  $('#'+id).find('.details').html(projectHTML)
+    '<p><small>' + result['date'] +'</p>'+
+    '<p>' + result['summary'] +
+    '</small></p></a>'; 
+  return projectHTML;
+}
+
+function callBack(result){
+  console.log(result);
+  var id="#project" + result.id;
+  var details = ";"
+  $(id).find('.details').html(addProject(result));
 }
